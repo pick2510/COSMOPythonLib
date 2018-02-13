@@ -1,9 +1,21 @@
 import numpy as np
 
+class Grid():
+    """This class handles conversion from regular latlon to COSMO rotated latlon grid.
+    Example usage:
+    from COSMOPythonLib.proj import RotatedGrid
+    import numpy as np
 
-TEST = False
+    g = RotatedGrid.Grid(pollat=43, pollon=-170)
+    lons = np.array([8,9,10])
+    lats = np.array([45,45.5,46])
+    rlons, rlats = g.transformToRot(lons, lats)
+    g.transformToReg(rlons,rlats)
 
-class rotatedGrid():
+    (array([ 8.00000155,  9.00000018, 10.        ]),
+    array([ 44.99874097,  45.49960289,  46.        ]))
+
+    """
     def __init__(self, pollon, pollat):
         self._pollambda = np.deg2rad(pollon)
         self._polphi = np.deg2rad(pollat)
@@ -19,7 +31,6 @@ class rotatedGrid():
         self._rlats = []
         self._rlons = []
         for element in zip(self._lons, self._lats):
-            print(np.rad2deg(element))
             self._rlats.append(self.latToRlat(element[0], element[1]))
             self._rlons.append(self.lonToRlon(element[0], element[1]))
         return np.array(np.rad2deg(self._rlons)), np.rad2deg(np.array(self._rlats))
@@ -32,7 +43,6 @@ class rotatedGrid():
         self._lats = []
         self._lons = []
         for element in zip(self._rlons, self._rlats):
-            print(np.rad2deg(element))
             self._lats.append(self.rlatToLat(element[0], element[1]))
             self._lons.append(self.rlonToLon(element[0], element[1]))
         return np.array(np.rad2deg(self._lons)), np.array(np.rad2deg(self._lats))
@@ -59,15 +69,3 @@ class rotatedGrid():
     def latToRlat(self, _lambda, phi):
         self._rphi = np.arcsin(np.sin(phi) * np.sin(self._polphi) + np.cos(phi) * np.cos(self._polphi) * np.cos(_lambda - self._pollambda))
         return self._rphi
-
-
-
-if TEST:
-    g = rotatedGrid(-170, 43)
-    print(g.getPole())
-    lons=  np.array([9,9,])
-    lats = np.array([48, 46,])
-    print(g.transformToRot(lons,lats))
-    lons = np.array([-0.7314390,-0.73144102])
-    lats = np.array([1.00427111, -0.99556595])
-    print(g.transformToReg(lons,lats))
