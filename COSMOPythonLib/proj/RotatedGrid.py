@@ -38,7 +38,7 @@ class Grid():
     def transformToReg(self, rlons, rlats):
         self._rlats = np.deg2rad(rlats)
         self._rlons = np.deg2rad(rlons)
-        if self._lats.shape != self._lons.shape:
+        if self._rlats.shape != self._rlons.shape:
             raise ValueError("Dims of lats and lons have to be the same......")
         self._lats = []
         self._lons = []

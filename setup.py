@@ -7,6 +7,6 @@ setup(name='COSMOPythonLib',
       author='Dominik Strebel',
       author_email='dominik.strebel@empa.ch',
       license='MIT',
-      packages=['COSMOPythonLib'],
+      packages=['COSMOPythonLib','COSMOPythonLib.proj'],
       install_requires=['numpy>0.8'],
       zip_safe=False)
