@@ -8,5 +8,5 @@ setup(name='COSMOPythonLib',
       author_email='dominik.strebel@empa.ch',
       license='MIT',
       packages=['COSMOPythonLib','COSMOPythonLib.proj'],
-      install_requires=['numpy>0.8','netCDF4','pandas>0.15'],
+      install_requires=['numpy>0.8','netCDF4>1.0.0','pandas>0.15','scipy>0.12'],
       zip_safe=False)

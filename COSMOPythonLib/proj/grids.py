@@ -23,29 +23,45 @@ class RotatedGrid():
     def getPole(self):
         return np.rad2deg(self._pollambda), np.rad2deg(self._polphi)
     
-    def transformToRot(self, lons, lats):
+    def transformToRot(self, lats, lons):
+        if not isinstance(lats, np.ndarray):
+            lats = np.array(lats)
+        if not isinstance(lons, np.ndarray):
+            lons = np.array(lons)
         self._lats = np.deg2rad(lats)
         self._lons = np.deg2rad(lons)
         if self._lats.shape != self._lons.shape:
             raise ValueError("Dims of lats and lons have to be the same......")
         self._rlats = []
         self._rlons = []
-        for element in zip(self._lons, self._lats):
-            self._rlats.append(self.latToRlat(element[0], element[1]))
-            self._rlons.append(self.lonToRlon(element[0], element[1]))
-        return np.array(np.rad2deg(self._rlons)), np.rad2deg(np.array(self._rlats))
+        if self._lats.size == 1:
+            self._rlats.append(self.latToRlat(self._lons, self._lats))
+            self._rlons.append(self.lonToRlon(self._lons, self._lats))
+        else:
+            for element in zip(self._lons, self._lats):
+                self._rlats.append(self.latToRlat(element[0], element[1]))
+                self._rlons.append(self.lonToRlon(element[0], element[1]))
+        return  np.rad2deg(np.array(self._rlats)), np.array(np.rad2deg(self._rlons))
 
-    def transformToReg(self, rlons, rlats):
+    def transformToReg(self, rlats, rlons):
+        if not isinstance(rlats, np.ndarray):
+            rlats = np.array(rlats)
+        if not isinstance(rlons, np.ndarray):
+            rlons = np.array(rlons)
         self._rlats = np.deg2rad(rlats)
         self._rlons = np.deg2rad(rlons)
         if self._rlats.shape != self._rlons.shape:
             raise ValueError("Dims of lats and lons have to be the same......")
         self._lats = []
         self._lons = []
-        for element in zip(self._rlons, self._rlats):
-            self._lats.append(self.rlatToLat(element[0], element[1]))
-            self._lons.append(self.rlonToLon(element[0], element[1]))
-        return np.array(np.rad2deg(self._lons)), np.array(np.rad2deg(self._lats))
+        if self._rlats.size == 1:
+            self._lats.append(self.rlatToLat(self._rlons, self._rlats))
+            self._lons.append(self.rlonToLon(self._rlons, self._rlats))
+        else:
+            for element in zip(self._rlons, self._rlats):
+                self._lats.append(self.rlatToLat(element[0], element[1]))
+                self._lons.append(self.rlonToLon(element[0], element[1]))
+        return np.array(np.rad2deg(self._lats)), np.array(np.rad2deg(self._lons))
         
     def rlonToLon(self, rlambda, rphi):
         s1 = np.sin(self._phi)
