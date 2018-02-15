@@ -1,12 +1,12 @@
 import numpy as np
 
-class Grid():
+class RotatedGrid():
     """This class handles conversion from regular latlon to COSMO rotated latlon grid.
     Example usage:
-    from COSMOPythonLib.proj import RotatedGrid
+    from COSMOPythonLib.proj import grids
     import numpy as np
 
-    g = RotatedGrid.Grid(pollat=43, pollon=-170)
+    g = grids.RotatedGrid(pollat=43, pollon=-170)
     lons = np.array([8,9,10])
     lats = np.array([45,45.5,46])
     rlons, rlats = g.transformToRot(lons, lats)
